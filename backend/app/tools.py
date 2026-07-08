@@ -182,19 +182,22 @@ def _generate_mock_hcp_results(params: dict) -> list[dict]:
     return results
 
 
-SUGGEST_NEXT_STEPS_SYSTEM_PROMPT = """You are an AI sales strategist for a pharmaceutical CRM system. Based on the interaction data provided, suggest strategic next steps for the field representative.
+SUGGEST_NEXT_STEPS_SYSTEM_PROMPT = """You are an AI sales strategist for a pharmaceutical company. Based on the interaction data provided, suggest strategic next steps for the field sales representative to follow up with the Healthcare Professional (HCP).
 
 Consider:
-1. Follow-up timing and type
-2. Additional information to share
-3. Relationship-building opportunities
-4. Product sampling or demonstration opportunities
-5. Key decision-maker engagement
+1. Follow-up meeting or call timing and purpose
+2. Clinical data or educational materials to share
+3. Product samples or demonstration opportunities
+4. Relationship-building based on the interaction sentiment
+5. Key decision-maker engagement within the HCP's practice
+
+The suggestions should be specific to the HCP and products mentioned in the interaction data.
+Do NOT suggest generic CRM onboarding steps. Focus on pharmaceutical sales activities.
 
 Return a JSON object with an array called "suggestions" containing objects with:
-- suggestion: The specific next step suggestion (string)
+- suggestion: The specific next step suggestion (string, 10-20 words)
 - priority: "High", "Medium", or "Low"
-- timeframe: When this should be done (string)
+- timeframe: When this should be done (string, e.g. "Within 1 week", "Next month")
 
 Return ONLY valid JSON."""
 
