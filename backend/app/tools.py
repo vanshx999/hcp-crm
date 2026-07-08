@@ -166,6 +166,9 @@ def _generate_mock_hcp_results(params: dict) -> list[dict]:
         {"name": "Dr. Emily Patel", "specialty": "Neurology", "region": "Chicago", "last_interaction": "2026-07-01"},
         {"name": "Dr. Michael Thompson", "specialty": "Cardiology", "region": "Boston", "last_interaction": "2026-05-20"},
         {"name": "Dr. Lisa Kim", "specialty": "Endocrinology", "region": "San Francisco", "last_interaction": "2026-07-05"},
+        {"name": "Dr. Robert Garcia", "specialty": "Dentistry", "region": "Los Angeles", "last_interaction": "2026-07-02"},
+        {"name": "Dr. Amanda Lee", "specialty": "Dentistry", "region": "San Francisco", "last_interaction": "2026-06-20"},
+        {"name": "Dr. David Wilson", "specialty": "General Practice", "region": "Chicago", "last_interaction": "2026-07-03"},
     ]
 
     results = mock_hcps
@@ -176,7 +179,7 @@ def _generate_mock_hcp_results(params: dict) -> list[dict]:
     if params.get("region"):
         results = [h for h in results if params["region"].lower() in h["region"].lower()]
 
-    return results if results else mock_hcps[:3]
+    return results
 
 
 SUGGEST_NEXT_STEPS_SYSTEM_PROMPT = """You are an AI sales strategist for a pharmaceutical CRM system. Based on the interaction data provided, suggest strategic next steps for the field representative.
