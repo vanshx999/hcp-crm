@@ -131,7 +131,7 @@ SEARCH_HCP_SYSTEM_PROMPT = """You are an AI assistant for a pharmaceutical CRM s
 
 Return a JSON object with:
 - name: HCP name or partial name to search (string, or "")
-- specialty: Medical specialty to filter by (string, or "")
+- specialty: Medical specialty to filter by — USE THE STANDARD SPECIALTY NAME (e.g. "Cardiology" not "cardiologist", "Dentistry" not "dentist") (string, or "")
 - region: Region/location to filter by (string, or "")
 
 Return ONLY a valid JSON object."""
@@ -173,11 +173,20 @@ def _generate_mock_hcp_results(params: dict) -> list[dict]:
 
     results = mock_hcps
     if params.get("name"):
-        results = [h for h in results if params["name"].lower() in h["name"].lower()]
+        name_q = params["name"].lower()
+        results = [h for h in results if name_q in h["name"].lower() or h["name"].lower() in name_q]
     if params.get("specialty"):
-        results = [h for h in results if params["specialty"].lower() in h["specialty"].lower()]
+        spec = params["specialty"].lower()
+        results = [h for h in results if
+                   spec in h["specialty"].lower() or
+                   h["specialty"].lower() in spec or
+                   spec[:6] in h["specialty"].lower() or
+                   h["specialty"].lower()[:6] in spec]
     if params.get("region"):
-        results = [h for h in results if params["region"].lower() in h["region"].lower()]
+        region = params["region"].lower()
+        results = [h for h in results if
+                   region in h["region"].lower() or
+                   h["region"].lower() in region]
 
     return results
 
@@ -203,6 +212,10 @@ Return ONLY valid JSON."""
 
 
 def suggest_next_steps_tool(interaction: dict) -> dict:
+    has_data = any(v for v in interaction.values() if v)
+    if not has_data:
+        return {"suggestions": []}
+
     result = _call_llm(
         SUGGEST_NEXT_STEPS_SYSTEM_PROMPT,
         f"Interaction data: {json.dumps(interaction)}\n\nSuggest next steps based on this interaction."

@@ -34,7 +34,7 @@ def _detect_intent(user_message: str) -> str:
     msg = user_message.lower()
     if any(kw in msg for kw in ["edit", "update", "change", "correct", "fix", "modify", "revise", "adjust"]):
         return "edit"
-    if any(kw in msg for kw in ["search", "find", "look up", "who is", "show me", "list"]):
+    if any(kw in msg for kw in ["search", "find", "look up", "who is", "show me", "list", "need a", "need an", "looking for", "recommend a"]):
         return "search"
     if any(kw in msg for kw in ["suggest", "next step", "recommend", "what should", "follow up", "strategy"]):
         return "suggest"
